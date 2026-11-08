@@ -1,0 +1,15 @@
+# 内部交接 / 实测记录，不进公开仓库
+HANDOFF.md
+交接.md
+ISSUE-session-scope.md
+screenshot.png
+
+# 本机备份与临时产物
+*.bak
+*.bak.*
+node_modules/
+pnpm-lock.yaml
+package-lock.json
+npm-debug.log*
+.DS_Store
+Thumbs.db
