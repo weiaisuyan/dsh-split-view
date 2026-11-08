@@ -1,5 +1,5 @@
 {
-  "name": "dsh-split-view",
+  "name": "@weiaisuyan/dsh-split-view",
   "version": "1.0.0",
   "description": "Hermes-style tabbed workspace for the DSH main area: drag sessions in, split into up to four columns, close tabs.",
   "type": "module",
@@ -58,5 +58,8 @@
   "homepage": "https://github.com/weiaisuyan/dsh-split-view#readme",
   "bugs": {
     "url": "https://github.com/weiaisuyan/dsh-split-view/issues"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
