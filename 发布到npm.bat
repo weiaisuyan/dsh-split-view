@@ -47,7 +47,8 @@ echo.
 echo [3/4] 发布...
 call npm publish --access public
 if errorlevel 1 (
-  echo       发布失败（常见原因：npm 用户名不是 weiaisuyan 导致 scope 不匹配 403 / 需要 2FA / 网络）
+  echo       发布失败。若是 403 scope 不匹配：改 scriptspublish-name.cjs 里的 PUBLISH_NAME
+  echo       （改成 @你的npm用户名/dsh-split-view，不要改 package.json 的 name）
   set RC=1
   goto restore
 )
