@@ -13,3 +13,4 @@ package-lock.json
 npm-debug.log*
 .DS_Store
 Thumbs.db
+package.json.publish-bak
