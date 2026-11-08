@@ -1,5 +1,5 @@
 {
-  "name": "@weiaisuyan/dsh-split-view",
+  "name": "dsh-split-view",
   "version": "1.0.0",
   "description": "Hermes-style tabbed workspace for the DSH main area: drag sessions in, split into up to four columns, close tabs.",
   "type": "module",
@@ -21,15 +21,24 @@
         "@deepseek-ai/dsh-client-locale",
         "@deepseek-ai/dsh-client-ui-renderer",
         "@deepseek-ai/dsh-client-ui-layout",
-        "@deepseek-ai/dsh-client-ui-conversation"
+        "@deepseek-ai/dsh-client-ui-conversation",
+        "@deepseek-ai/dsh-client-ui-context-menu"
       ],
       "platform": "web"
     },
-    "manifestVersion": 1
+    "manifestVersion": 1,
+    "inject": [
+      "@deepseek-ai/dsh-client-ui-context-menu",
+      "@deepseek-ai/dsh-client-ui-layout",
+      "@deepseek-ai/dsh-client-ui-renderer",
+      "@deepseek-ai/dsh-client-locale",
+      "@deepseek-ai/dsh-client-ui-conversation"
+    ]
   },
   "peerDependencies": {
     "@deepseek-ai/dsh": ">=0.2.1-rc.5",
-    "react": "^18.2.0"
+    "react": "^18.2.0",
+    "@deepseek-ai/dsh-client-ui-context-menu": ">=0.2.1-rc.5"
   },
   "files": [
     "lib/index.js",
@@ -58,8 +67,5 @@
   "homepage": "https://github.com/weiaisuyan/dsh-split-view#readme",
   "bugs": {
     "url": "https://github.com/weiaisuyan/dsh-split-view/issues"
-  },
-  "publishConfig": {
-    "access": "public"
   }
 }
