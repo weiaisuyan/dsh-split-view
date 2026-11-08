@@ -47,8 +47,8 @@ echo.
 echo [3/4] 发布...
 call npm publish --access public
 if errorlevel 1 (
-  echo       发布失败。若是 403 scope 不匹配：改 scriptspublish-name.cjs 里的 PUBLISH_NAME
-  echo       （改成 @你的npm用户名/dsh-split-view，不要改 package.json 的 name）
+  echo       发布失败。若是 403 scope 不匹配：改 scripts\publish-name.cjs 里的 PUBLISH_NAME
+  echo       （改成 @你的npm用户名/dsh-split-view；不要改 package.json 的 name）
   set RC=1
   goto restore
 )
