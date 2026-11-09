@@ -7,4 +7,4 @@
 # (a single `insert` of the plugin row).
 - insert:
     - id: split-view
-      name: 'dsh-split-view'
+      name: 'dsh-multipane'

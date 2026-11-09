@@ -1,6 +1,6 @@
 {
-  "name": "dsh-split-view",
-  "version": "1.0.1",
+  "name": "dsh-multipane",
+  "version": "1.0.2",
   "description": "Hermes-style tabbed workspace for the DSH main area: drag sessions in, split into up to four columns, close tabs.",
   "type": "module",
   "main": "lib/index.js",
@@ -67,5 +67,8 @@
   "homepage": "https://github.com/weiaisuyan/dsh-split-view#readme",
   "bugs": {
     "url": "https://github.com/weiaisuyan/dsh-split-view/issues"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
