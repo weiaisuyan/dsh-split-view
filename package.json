@@ -1,0 +1,71 @@
+{
+  "name": "dsh-split-view",
+  "version": "1.0.1",
+  "description": "Hermes-style tabbed workspace for the DSH main area: drag sessions in, split into up to four columns, close tabs.",
+  "type": "module",
+  "main": "lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./client": "./lib/client.js",
+    "./package.json": "./package.json"
+  },
+  "dsh": {
+    "engines": {
+      "dsh": ">=0.2.1-rc.5"
+    },
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "inject": [
+        "@deepseek-ai/dsh-client-locale",
+        "@deepseek-ai/dsh-client-ui-renderer",
+        "@deepseek-ai/dsh-client-ui-layout",
+        "@deepseek-ai/dsh-client-ui-conversation",
+        "@deepseek-ai/dsh-client-ui-context-menu"
+      ],
+      "platform": "web"
+    },
+    "manifestVersion": 1,
+    "inject": [
+      "@deepseek-ai/dsh-client-ui-context-menu",
+      "@deepseek-ai/dsh-client-ui-layout",
+      "@deepseek-ai/dsh-client-ui-renderer",
+      "@deepseek-ai/dsh-client-locale",
+      "@deepseek-ai/dsh-client-ui-conversation"
+    ]
+  },
+  "peerDependencies": {
+    "@deepseek-ai/dsh": ">=0.2.1-rc.5",
+    "react": "^18.2.0",
+    "@deepseek-ai/dsh-client-ui-context-menu": ">=0.2.1-rc.5"
+  },
+  "files": [
+    "lib/index.js",
+    "lib/client.js",
+    "cordis.patch.yml",
+    "README.md",
+    "LICENSE"
+  ],
+  "readme": "README.md",
+  "license": "MIT",
+  "keywords": [
+    "dsh-plugin",
+    "dsh",
+    "deepseek",
+    "harness",
+    "workspace",
+    "split-view",
+    "tabs",
+    "multi-pane"
+  ],
+  "author": "weiaisuyan",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/weiaisuyan/dsh-split-view.git"
+  },
+  "homepage": "https://github.com/weiaisuyan/dsh-split-view#readme",
+  "bugs": {
+    "url": "https://github.com/weiaisuyan/dsh-split-view/issues"
+  }
+}

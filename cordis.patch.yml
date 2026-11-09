@@ -1,0 +1,10 @@
+# dsh-split-view bundle patch.
+#
+# Installing this package through the official CLI
+#   dsh plugin --profile desktop add file:<path-to-this-directory>
+# reconciles `dsh.profile.bundles` against installed packages and appends
+# `dsh-split-view` to the bundle stack; the profile boot then merges this patch
+# (a single `insert` of the plugin row).
+- insert:
+    - id: split-view
+      name: 'dsh-split-view'
