@@ -2,11 +2,67 @@
 
 Hermes 式多栏工作区，接管 DSH 主区：每栏一条自己的标签条、拖拽分栏、可关闭，最多四栏。
 
+## 安装
+
+需要 DSH `0.2.1-rc.5` 及以上。装完**重启 DSH** 才会生效。
+
+### 方式一（推荐）：npm
+
+在 DSH「设置 → 添加插件」里粘贴包名：
+
+```
+@weiaisuyansjd/dsh-split-view
+```
+
+或者命令行：
+
+```sh
+npx @deepseek-ai/dsh plugin --profile desktop add @weiaisuyansjd/dsh-split-view
+```
+
+npm 走公共 registry，有国内镜像可用，比 GitHub 稳。
+
+### 方式二：GitHub 直装
+
+拿到的是 `main` 分支当前代码（可能比 npm 上的新），需要能访问 GitHub。
+
+```sh
+npx @deepseek-ai/dsh plugin --profile desktop add github:weiaisuyan/dsh-split-view
+```
+
+### ⚠️ 不要和 npm 上的 `dsh-split-view` 混装
+
+npm 上有一个**同名不同源**的插件 `dsh-split-view`（作者 luckybilly），它也是给 DSH 做多会话分屏的，但实现路线完全不同（每栏跑一个 iframe 客户端）。两者装名会撞车：
+
+| 来源 | 安装名 |
+| --- | --- |
+| 本插件（npm） | `@weiaisuyansjd/dsh-split-view` |
+| 本插件（GitHub 直装） | `dsh-split-view`（取自仓库 package.json） |
+| 另一个作者的插件 | `dsh-split-view` |
+
+也就是说 **GitHub 直装的版本和 luckybilly 那个包同名**。两个都装会互相覆盖，表现出来是「插件时有时无、改了没反应」。装之前先确认机器上没有另一个 `dsh-split-view`。
+
+### 卸载
+
+```sh
+# npm 装的
+npx @deepseek-ai/dsh plugin --profile desktop remove @weiaisuyansjd/dsh-split-view
+# GitHub 装的
+npx @deepseek-ai/dsh plugin --profile desktop remove dsh-split-view
+```
+
+### 升级
+
+手动安装通道不支持自动更新：
+
+- **npm 装**：重跑一次 `add`（或先 `remove` 再 `add`）
+- **GitHub 装**：必须 `remove` 后重新 `add`，否则不会拉到新提交
+
 ## 交互
 
 | 动作 | 结果 |
 | --- | --- |
-| 点侧栏「多栏」 | 打开本插件的设置页（启用 / 关闭开关） |
+| 点侧栏「多栏视图」 | 打开本插件的设置页（启用 / 关闭开关） |
 | 设置页里打开开关 | 立刻进入工作区，之后打开 App 直接是工作区（默认启用） |
 | 设置页里关掉开关 | 立刻回到 DSH 原生单栏视图 |
 | 点侧栏会话（工作区开着） | **替换**当前焦点栏的活动标签；设置页或原生视图下点会话也会切回工作区 |
@@ -19,8 +75,6 @@ Hermes 式多栏工作区，接管 DSH 主区：每栏一条自己的标签条�
 | 标签上的 `×` | 关闭标签 |
 | 标签**中键单击** / **双击** | 关闭标签 |
 | 每栏标签条上的 `+` | 在该栏新建空标签（空白标签 = 新会话页，带完整输入框） |
-| 每栏标签条上的 `⊟` | 关闭这一栏（至少保留一栏） |
-| 每栏标签条上的 `⚙` | 打开插件设置页 |
 | 拖动栏间分隔条 | 调整栏宽 |
 | 底部状态条 | 常显，跟随焦点栏的活动标签：会话名、轮次、用量、缓存命中、智能体用时 |
 
