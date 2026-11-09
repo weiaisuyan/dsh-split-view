@@ -7,7 +7,7 @@ set RC=0
 
 echo ============================================================
 echo  本地包名：dsh-split-view        （必须保持，改了就激活不了插件）
-echo  发布包名：@weiaisuyan/dsh-split-view
+echo  发布包名：@weiaisuyansjd/dsh-split-view
 echo             npm 上 dsh-split-view 已被 luckybilly 占用，只能发 scoped 包
 echo  流程：临时改名 -^> 预览 -^> 发布 -^> 立刻改回（失败也会改回）
 echo ============================================================
@@ -26,7 +26,7 @@ if errorlevel 1 (
 )
 
 echo.
-echo [1/4] 临时把包名切成 @weiaisuyan/dsh-split-view ...
+echo [1/4] 临时把包名切成 @weiaisuyansjd/dsh-split-view ...
 node scripts\publish-name.cjs on
 if errorlevel 1 (
   echo       改名失败
@@ -46,23 +46,38 @@ if errorlevel 1 (
 echo.
 echo [3/4] 发布...
 call npm publish --access public
-if errorlevel 1 (
-  echo       发布失败。若是 403 scope 不匹配：改 scripts\publish-name.cjs 里的 PUBLISH_NAME
-  echo       （改成 @你的npm用户名/dsh-split-view；不要改 package.json 的 name）
+if not errorlevel 1 goto published
+
+echo.
+echo       这次发布需要 2FA 验证码（npm 账号开了两步验证）。
+echo       打开验证器 App，把 6 位数字输进去后回车：
+set OTP=
+set /p OTP=
+if "%OTP%"=="" (
+  echo       没输入验证码，放弃发布
   set RC=1
   goto restore
 )
+call npm publish --access public --otp=%OTP%
+if errorlevel 1 (
+  echo       发布失败（验证码不对 / 过期 / scope 不匹配 403 / 网络）
+  echo       若一直 403 scope 不匹配：改 scripts\publish-name.cjs 里的 PUBLISH_NAME
+  set RC=1
+  goto restore
+)
+
+:published
 
 echo.
 echo [4/4] 恢复本地包名 dsh-split-view ...
 node scripts\publish-name.cjs off
 echo.
 echo ============================================================
-echo  发布成功：@weiaisuyan/dsh-split-view
+echo  发布成功：@weiaisuyansjd/dsh-split-view
 echo  别人安装（DSH 设置 -^> 添加插件，粘贴下面这行）：
-echo      @weiaisuyan/dsh-split-view
+echo      @weiaisuyansjd/dsh-split-view
 echo  或命令行：
-echo      npx @deepseek-ai/dsh plugin --profile desktop add @weiaisuyan/dsh-split-view
+echo      npx @deepseek-ai/dsh plugin --profile desktop add @weiaisuyansjd/dsh-split-view
 echo  市场（dshmarket）读 npm 数据，会自动收录，不用另外提交。
 echo ============================================================
 goto end

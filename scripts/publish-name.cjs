@@ -13,7 +13,7 @@ const fs = require("fs");
 const path = require("path");
 
 const LOCAL_NAME = "dsh-split-view";
-const PUBLISH_NAME = "@weiaisuyan/dsh-split-view";
+const PUBLISH_NAME = "@weiaisuyansjd/dsh-split-view";
 const pkgPath = path.join(__dirname, "..", "package.json");
 const bakPath = path.join(__dirname, "..", "package.json.publish-bak");
 
