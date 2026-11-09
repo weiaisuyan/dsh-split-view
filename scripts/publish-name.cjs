@@ -16,6 +16,8 @@ const LOCAL_NAME = "dsh-split-view";
 const PUBLISH_NAME = "@weiaisuyansjd/dsh-split-view";
 const pkgPath = path.join(__dirname, "..", "package.json");
 const bakPath = path.join(__dirname, "..", "package.json.publish-bak");
+const patchPath = path.join(__dirname, "..", "cordis.patch.yml");
+const patchBakPath = path.join(__dirname, "..", "cordis.patch.yml.publish-bak");
 
 const mode = process.argv[2];
 
@@ -34,7 +36,14 @@ if (mode === "on") {
   current.name = PUBLISH_NAME;
   current.publishConfig = { access: "public" };
   write(current);
-  console.log("包名 ->", PUBLISH_NAME, "（原文件已备份到 package.json.publish-bak）");
+  /* cordis.patch.yml 里 `name:` 是插件的注册名，DSH 要求它等于 package.json 的 name。
+     不改这一行的话，npm 装的 scoped 包会因为名字对不上而**静默不激活**（无报错，插件就是不出来）。 */
+  if (fs.existsSync(patchPath)) {
+    fs.copyFileSync(patchPath, patchBakPath);
+    const yml = fs.readFileSync(patchPath, "utf8").replace(`name: '${LOCAL_NAME}'`, `name: '${PUBLISH_NAME}'`);
+    fs.writeFileSync(patchPath, yml, "utf8");
+  }
+  console.log("包名 ->", PUBLISH_NAME, "（package.json 与 cordis.patch.yml 一起改，均已备份）");
   process.exit(0);
 }
 
@@ -49,7 +58,15 @@ if (mode === "off") {
   json.name = LOCAL_NAME;
   delete json.publishConfig;
   write(json);
-  console.log("包名 ->", LOCAL_NAME, "（已恢复，可以正常被 DSH 加载）");
+  /* cordis.patch.yml 同步还原（否则本地安装会因为 name 是 scoped 而激活不了） */
+  if (fs.existsSync(patchBakPath)) {
+    fs.copyFileSync(patchBakPath, patchPath);
+    fs.unlinkSync(patchBakPath);
+  } else if (fs.existsSync(patchPath)) {
+    const yml = fs.readFileSync(patchPath, "utf8").replace(`name: '${PUBLISH_NAME}'`, `name: '${LOCAL_NAME}'`);
+    fs.writeFileSync(patchPath, yml, "utf8");
+  }
+  console.log("包名 ->", LOCAL_NAME, "（package.json 与 cordis.patch.yml 均已还原）");
   process.exit(0);
 }
 

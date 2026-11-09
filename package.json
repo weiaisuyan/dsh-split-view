@@ -1,6 +1,6 @@
 {
   "name": "dsh-split-view",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Hermes-style tabbed workspace for the DSH main area: drag sessions in, split into up to four columns, close tabs.",
   "type": "module",
   "main": "lib/index.js",
