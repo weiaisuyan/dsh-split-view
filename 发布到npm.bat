@@ -1,94 +1,90 @@
 @echo off
-chcp 65001 >nul
 setlocal
-title å‘å¸ƒ dsh-split-view åˆ° npm
+title ·¢²¼ dsh-split-view µ½ npm
 cd /d "C:\Users\weiai\.dsh\plugin-src\dsh-split-view"
 set RC=0
 
 echo ============================================================
-echo  æœ¬åœ°åŒ…åï¼šdsh-split-view        ï¼ˆå¿…é¡»ä¿æŒï¼Œæ”¹äº†å°±æ¿€æ´»ä¸äº†æ’ä»¶ï¼‰
-echo  å‘å¸ƒåŒ…åï¼š@weiaisuyansjd/dsh-split-view
-echo             npm ä¸Š dsh-split-view å·²è¢« luckybilly å ç”¨ï¼Œåªèƒ½å‘ scoped åŒ…
-echo  æµç¨‹ï¼šä¸´æ—¶æ”¹å -^> é¢„è§ˆ -^> å‘å¸ƒ -^> ç«‹åˆ»æ”¹å›ï¼ˆå¤±è´¥ä¹Ÿä¼šæ”¹å›ï¼‰
+echo  ±¾µØ°üÃû : dsh-split-view        (±ØĞë±£³Ö£¬¸ÄÁË¾Í¼¤»î²»ÁË²å¼ş)
+echo  ·¢²¼°üÃû : @weiaisuyansjd/dsh-split-view
+echo  Á÷³Ì     : ÁÙÊ±¸ÄÃû - Ô¤ÀÀ - ·¢²¼ - Á¢¿Ì¸Ä»Ø (Ê§°ÜÒ²»á¸Ä»Ø)
 echo ============================================================
 echo.
 
-echo [0/4] æ£€æŸ¥ npm ç™»å½•çŠ¶æ€...
+echo [0/4] ¼ì²é npm µÇÂ¼×´Ì¬...
 call npm whoami >nul 2>&1
 if errorlevel 1 (
-  echo       æœªç™»å½•ï¼Œæ‰“å¼€æµè§ˆå™¨ç™»å½• npmï¼ˆç™»å½•å®Œå›åˆ°è¿™ä¸ªçª—å£ï¼‰
+  echo       Î´µÇÂ¼£¬´ò¿ªä¯ÀÀÆ÷µÇÂ¼ npm
   call npm login
   if errorlevel 1 (
-    echo       ç™»å½•å¤±è´¥
+    echo       µÇÂ¼Ê§°Ü
     set RC=1
     goto restore
   )
 )
 
 echo.
-echo [1/4] ä¸´æ—¶æŠŠåŒ…ååˆ‡æˆ @weiaisuyansjd/dsh-split-view ...
+echo [1/4] ÁÙÊ±°Ñ°üÃûÇĞ³É @weiaisuyansjd/dsh-split-view ...
 node scripts\publish-name.cjs on
 if errorlevel 1 (
-  echo       æ”¹åå¤±è´¥
+  echo       ¸ÄÃûÊ§°Ü
   set RC=1
   goto restore
 )
 
 echo.
-echo [2/4] é¢„è§ˆè¦å‘å¸ƒçš„æ–‡ä»¶ï¼ˆåº”å½“åªæœ‰ 6 ä¸ªï¼šlib x2 + cordis.patch.yml + README + LICENSE + package.jsonï¼‰...
+echo [2/4] Ô¤ÀÀÒª·¢²¼µÄÎÄ¼ş ...
 call npm pack --dry-run
 if errorlevel 1 (
-  echo       é¢„è§ˆå¤±è´¥
+  echo       Ô¤ÀÀÊ§°Ü
   set RC=1
   goto restore
 )
 
 echo.
-echo [3/4] å‘å¸ƒ...
-call npm publish --access public
-if not errorlevel 1 goto published
-
+echo [3/4] ·¢²¼...
+echo       ×¢Òâ: ÄãµÄ npm ÕËºÅ¿ªÁËÁ½²½ÑéÖ¤, »áÒªÇóÊäÈë 6 Î»ÑéÖ¤Âë
 echo.
-echo       è¿™æ¬¡å‘å¸ƒéœ€è¦ 2FA éªŒè¯ç ï¼ˆnpm è´¦å·å¼€äº†ä¸¤æ­¥éªŒè¯ï¼‰ã€‚
-echo       æ‰“å¼€éªŒè¯å™¨ Appï¼ŒæŠŠ 6 ä½æ•°å­—è¾“è¿›å»åå›è½¦ï¼š
 set OTP=
-set /p OTP=
+set /p OTP=Çë´ò¿ªÑéÖ¤Æ÷ App, ÊäÈë 6 Î»Êı×Öºó»Ø³µ:
 if "%OTP%"=="" (
-  echo       æ²¡è¾“å…¥éªŒè¯ç ï¼Œæ”¾å¼ƒå‘å¸ƒ
+  echo.
+  echo       Ã»ÊäÈëÑéÖ¤Âë, ·ÅÆú·¢²¼
   set RC=1
   goto restore
 )
+echo.
 call npm publish --access public --otp=%OTP%
 if errorlevel 1 (
-  echo       å‘å¸ƒå¤±è´¥ï¼ˆéªŒè¯ç ä¸å¯¹ / è¿‡æœŸ / scope ä¸åŒ¹é… 403 / ç½‘ç»œï¼‰
-  echo       è‹¥ä¸€ç›´ 403 scope ä¸åŒ¹é…ï¼šæ”¹ scripts\publish-name.cjs é‡Œçš„ PUBLISH_NAME
+  echo.
+  echo       ·¢²¼Ê§°Ü. ³£¼ûÔ­Òò:
+  echo         - ÑéÖ¤ÂëÊä´í»ò¹ıÆÚ: ÖØĞÂË«»÷±¾ÎÄ¼şÔÙÊÔ
+  echo         - Ò»Ö± 403 scope ²»Æ¥Åä: ¸Ä scripts\publish-name.cjs ÀïµÄ PUBLISH_NAME
+  echo         - ÏëÃâÑéÖ¤Âë: È¥ npm ÍøÕ¾Éú³É granular token (¹´Ñ¡ bypass 2FA) Ğ´½ø .npmrc
   set RC=1
   goto restore
 )
 
-:published
-
 echo.
-echo [4/4] æ¢å¤æœ¬åœ°åŒ…å dsh-split-view ...
+echo [4/4] »Ö¸´±¾µØ°üÃû dsh-split-view ...
 node scripts\publish-name.cjs off
 echo.
 echo ============================================================
-echo  å‘å¸ƒæˆåŠŸï¼š@weiaisuyansjd/dsh-split-view
-echo  åˆ«äººå®‰è£…ï¼ˆDSH è®¾ç½® -^> æ·»åŠ æ’ä»¶ï¼Œç²˜è´´ä¸‹é¢è¿™è¡Œï¼‰ï¼š
+echo  ·¢²¼³É¹¦: @weiaisuyansjd/dsh-split-view
+echo  ±ğÈË°²×° (DSH ÉèÖÃ - Ìí¼Ó²å¼ş, Õ³ÌùÏÂÒ»ĞĞ):
 echo      @weiaisuyansjd/dsh-split-view
-echo  æˆ–å‘½ä»¤è¡Œï¼š
+echo  »òÃüÁîĞĞ:
 echo      npx @deepseek-ai/dsh plugin --profile desktop add @weiaisuyansjd/dsh-split-view
-echo  å¸‚åœºï¼ˆdshmarketï¼‰è¯» npm æ•°æ®ï¼Œä¼šè‡ªåŠ¨æ”¶å½•ï¼Œä¸ç”¨å¦å¤–æäº¤ã€‚
 echo ============================================================
 goto end
 
 :restore
 echo.
-echo æ­£åœ¨æ¢å¤æœ¬åœ°åŒ…åï¼ˆä¿è¯æ’ä»¶è¿˜èƒ½æ­£å¸¸åŠ è½½ï¼‰...
+echo ÕıÔÚ»Ö¸´±¾µØ°üÃû (±£Ö¤²å¼ş»¹ÄÜÕı³£¼ÓÔØ) ...
 node scripts\publish-name.cjs off
 
 :end
 echo.
-echo æç¤ºï¼šæœ¬åœ° package.json çš„ name æ°¸è¿œæ˜¯ dsh-split-viewï¼Œåˆ«æ‰‹åŠ¨æ”¹æˆ scoped åã€‚
+echo ÌáÊ¾: ±¾µØ package.json µÄ name ÓÀÔ¶ÊÇ dsh-split-view
 pause
 exit /b %RC%
