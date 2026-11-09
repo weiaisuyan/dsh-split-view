@@ -1,4 +1,4 @@
-# dsh-split-view
+# dsh-multipane（多栏视图）
 
 Hermes 式多栏工作区，接管 DSH 主区：每栏一条自己的标签条、拖拽分栏、可关闭，最多四栏。
 
@@ -6,18 +6,22 @@ Hermes 式多栏工作区，接管 DSH 主区：每栏一条自己的标签条�
 
 需要 DSH `0.2.1-rc.5` 及以上。装完**重启 DSH** 才会生效。
 
+> **名字必须三处一致**：`package.json` 的 `name`、`cordis.patch.yml` 的 `name`、`lib/client.js` 里的模块 `id`
+> 三者要完全相同，否则 DSH 会静默不加载（控制台报 `import failed` / `duplicate factory registration`）。
+> 所以本项目**不做发布期改名**，本地开发名和 npm 包名就是同一个 `dsh-multipane`。
+
 ### 方式一（推荐）：npm
 
 在 DSH「设置 → 添加插件」里粘贴包名：
 
 ```
-@weiaisuyan/dsh-split-view
+dsh-multipane
 ```
 
 或者命令行：
 
 ```sh
-npx @deepseek-ai/dsh plugin --profile desktop add @weiaisuyan/dsh-split-view
+npx @deepseek-ai/dsh plugin --profile desktop add dsh-multipane
 ```
 
 npm 走公共 registry，有国内镜像可用，比 GitHub 稳。
@@ -30,24 +34,31 @@ npm 走公共 registry，有国内镜像可用，比 GitHub 稳。
 npx @deepseek-ai/dsh plugin --profile desktop add github:weiaisuyan/dsh-split-view
 ```
 
-### ⚠️ 不要和 npm 上的 `dsh-split-view` 混装
+仓库名仍是 `dsh-split-view`，但包名取自 `package.json`，装下来同样叫 `dsh-multipane`。
 
-npm 上有一个**同名不同源**的插件 `dsh-split-view`（作者 luckybilly），它也是给 DSH 做多会话分屏的，但实现路线完全不同（每栏跑一个 iframe 客户端）。两者装名会撞车：
+### ⚠️ 别和作者 luckybilly 的 `dsh-split-view` 同时启用
+
+npm 上另有一个插件 `dsh-split-view`（作者 luckybilly），也是给 DSH 做多会话分屏，实现路线完全不同（每栏跑一个 iframe 客户端）。
 
 | 来源 | 安装名 |
 | --- | --- |
-| 本插件（npm） | `@weiaisuyan/dsh-split-view` |
-| 本插件（GitHub 直装） | `dsh-split-view`（取自仓库 package.json） |
+| 本插件（npm / GitHub 装法都一样） | `dsh-multipane` |
 | 另一个作者的插件 | `dsh-split-view` |
 
-也就是说 **GitHub 直装的版本和 luckybilly 那个包同名**。两个都装会互相覆盖，表现出来是「插件时有时无、改了没反应」。装之前先确认机器上没有另一个 `dsh-split-view`。
+两者**名字不同、不会互相覆盖**，但都在抢主区，同时启用会互相打架（栏结构错乱、设置页串台）。只留一个，装前先确认：
+
+```sh
+npx @deepseek-ai/dsh plugin list | grep split-view
+```
+
+如果你装过本插件的旧版本（`@weiaisuyan/dsh-split-view`，或 GitHub 直装的 `dsh-split-view`），先按下面的命令卸掉再装新版。
 
 ### 卸载
 
 ```sh
-# npm 装的
+npx @deepseek-ai/dsh plugin --profile desktop remove dsh-multipane
+# 旧版本（如果装过）
 npx @deepseek-ai/dsh plugin --profile desktop remove @weiaisuyan/dsh-split-view
-# GitHub 装的
 npx @deepseek-ai/dsh plugin --profile desktop remove dsh-split-view
 ```
 
@@ -57,6 +68,8 @@ npx @deepseek-ai/dsh plugin --profile desktop remove dsh-split-view
 
 - **npm 装**：重跑一次 `add`（或先 `remove` 再 `add`）
 - **GitHub 装**：必须 `remove` 后重新 `add`，否则不会拉到新提交
+
+升级/换装都不会丢布局：栏、标签、栏宽存在 `localStorage`（键名固定为 `dsh-split-view:*`，与包名无关）。
 
 ## 交互
 
