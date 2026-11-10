@@ -1,6 +1,1 @@
-{
-	"meta": {
-		"title": "多栏视图 (dsh-multipane)",
-		"description": "把 DSH 主区换成多栏标签工作区：最多四栏会话并排，每栏自带标签条、输入框与视图切换条。"
-	}
-}
+{"meta":{"title":"多栏视图 (dsh-multipane)","description":"把 DSH 主区换成多栏标签工作区：最多四栏会话并排，每栏自带标签条、输入框与视图切换条，拖标签即分栏。"}}

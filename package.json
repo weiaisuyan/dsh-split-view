@@ -1,83 +1,86 @@
 {
-  "name": "dsh-multipane",
-  "version": "1.0.34",
-  "description": "Hermes-style tabbed workspace for the DSH main area: drag sessions in, split into up to four columns, close tabs.",
-  "displayName": "多栏视图",
-  "dshhub": {
-    "schemaVersion": 1,
-    "displayName": "多栏视图",
-    "summary": "把 DSH 主区换成多栏标签工作区：最多四栏会话并排，每栏自带标签条、输入框与视图切换条。",
-    "categories": ["界面"]
-  },
-  "type": "module",
-  "main": "lib/index.js",
-  "exports": {
-    ".": "./lib/index.js",
-    "./client": "./lib/client.js",
-    "./package.json": "./package.json",
-    "./locale/*.json": "./locale/*.json"
-  },
-  "dsh": {
-    "engines": {
-      "dsh": ">=0.2.1-rc.5"
-    },
-    "bundle": {
-      "patch": "./cordis.patch.yml"
-    },
-    "client": {
-      "inject": [
-        "@deepseek-ai/dsh-client-locale",
-        "@deepseek-ai/dsh-client-ui-renderer",
-        "@deepseek-ai/dsh-client-ui-layout",
-        "@deepseek-ai/dsh-client-ui-conversation",
-        "@deepseek-ai/dsh-client-ui-context-menu"
-      ],
-      "platform": "web"
-    },
-    "manifestVersion": 1,
-    "inject": [
-      "@deepseek-ai/dsh-client-ui-context-menu",
-      "@deepseek-ai/dsh-client-ui-layout",
-      "@deepseek-ai/dsh-client-ui-renderer",
-      "@deepseek-ai/dsh-client-locale",
-      "@deepseek-ai/dsh-client-ui-conversation"
-    ]
-  },
-  "peerDependencies": {
-    "@deepseek-ai/dsh": ">=0.2.1-rc.5",
-    "react": "^18.2.0",
-    "@deepseek-ai/dsh-client-ui-context-menu": ">=0.2.1-rc.5"
-  },
-  "files": [
-    "locale",
-    "lib/index.js",
-    "lib/client.js",
-    "cordis.patch.yml",
-    "README.md",
-    "LICENSE"
-  ],
-  "readme": "README.md",
-  "license": "MIT",
-  "keywords": [
-    "dsh-plugin",
-    "dsh",
-    "deepseek",
-    "harness",
-    "workspace",
-    "split-view",
-    "tabs",
-    "multi-pane"
-  ],
-  "author": "weiaisuyan",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/weiaisuyan/dsh-split-view.git"
-  },
-  "homepage": "https://github.com/weiaisuyan/dsh-split-view#readme",
-  "bugs": {
-    "url": "https://github.com/weiaisuyan/dsh-split-view/issues"
-  },
-  "publishConfig": {
-    "access": "public"
-  }
+    "name":  "dsh-multipane",
+    "version":  "1.0.35",
+    "description":  "Split the DSH main area into up to four panes, each with its own tab strip, composer and view switcher. Drag a tab to a pane edge to split. Bilingual (zh/en).",
+    "displayName":  "多栏视图",
+    "dshhub":  {
+                   "schemaVersion":  1,
+                   "displayName":  "多栏视图",
+                   "summary":  "把 DSH 主区换成多栏标签工作区：最多四栏会话并排，每栏自带标签条、输入框与视图切换条，拖标签即分栏，中英双语。",
+                   "categories":  [
+                                      "界面"
+                                  ]
+               },
+    "type":  "module",
+    "main":  "lib/index.js",
+    "exports":  {
+                    ".":  "./lib/index.js",
+                    "./client":  "./lib/client.js",
+                    "./package.json":  "./package.json",
+                    "./locale/*.json":  "./locale/*.json"
+                },
+    "dsh":  {
+                "engines":  {
+                                "dsh":  "\u003e=0.2.1-rc.5"
+                            },
+                "bundle":  {
+                               "patch":  "./cordis.patch.yml"
+                           },
+                "client":  {
+                               "inject":  [
+                                              "@deepseek-ai/dsh-client-locale",
+                                              "@deepseek-ai/dsh-client-ui-renderer",
+                                              "@deepseek-ai/dsh-client-ui-layout",
+                                              "@deepseek-ai/dsh-client-ui-conversation",
+                                              "@deepseek-ai/dsh-client-ui-context-menu"
+                                          ],
+                               "platform":  "web"
+                           },
+                "manifestVersion":  1,
+                "inject":  [
+                               "@deepseek-ai/dsh-client-ui-context-menu",
+                               "@deepseek-ai/dsh-client-ui-layout",
+                               "@deepseek-ai/dsh-client-ui-renderer",
+                               "@deepseek-ai/dsh-client-locale",
+                               "@deepseek-ai/dsh-client-ui-conversation"
+                           ]
+            },
+    "peerDependencies":  {
+                             "@deepseek-ai/dsh":  "\u003e=0.2.1-rc.5",
+                             "react":  "^18.2.0",
+                             "@deepseek-ai/dsh-client-ui-context-menu":  "\u003e=0.2.1-rc.5"
+                         },
+    "files":  [
+                  "locale",
+                  "lib/index.js",
+                  "lib/client.js",
+                  "cordis.patch.yml",
+                  "README.md",
+                  "README.en.md",
+                  "LICENSE"
+              ],
+    "readme":  "README.md",
+    "license":  "MIT",
+    "keywords":  [
+                     "dsh-plugin",
+                     "dsh",
+                     "deepseek",
+                     "harness",
+                     "workspace",
+                     "split-view",
+                     "tabs",
+                     "multi-pane"
+                 ],
+    "author":  "weiaisuyan",
+    "repository":  {
+                       "type":  "git",
+                       "url":  "git+https://github.com/weiaisuyan/dsh-split-view.git"
+                   },
+    "homepage":  "https://github.com/weiaisuyan/dsh-split-view#readme",
+    "bugs":  {
+                 "url":  "https://github.com/weiaisuyan/dsh-split-view/issues"
+             },
+    "publishConfig":  {
+                          "access":  "public"
+                      }
 }

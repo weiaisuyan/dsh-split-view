@@ -2,7 +2,6 @@
 HANDOFF.md
 交接.md
 ISSUE-session-scope.md
-screenshot.png
 
 # 本机备份与临时产物
 *.bak
@@ -14,3 +13,9 @@ npm-debug.log*
 .DS_Store
 Thumbs.db
 package.json.publish-bak
+
+# 作者本地工具（不公开）
+发布到npm.bat
+设置npm令牌.bat
+外观样式对照表.md
+_author-tools/

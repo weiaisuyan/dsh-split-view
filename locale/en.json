@@ -1,6 +1,1 @@
-{
-	"meta": {
-		"title": "Multi-pane",
-		"description": "Turn the DSH main area into a tabbed workspace: up to four sessions side by side, each with its own tab strip, composer and view switcher."
-	}
-}
+{"meta":{"title":"Multi-pane","description":"Turn the DSH main area into up to four side-by-side panes, each with its own tab strip, composer and view switcher. Drag a tab to a pane edge to split."}}
