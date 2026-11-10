@@ -246,6 +246,12 @@ Get-Item "$env:USERPROFILE\.dsh\profiles\desktop\node_modules\dsh-split-view" | 
 
 ## 更新记录
 
+### 1.0.10（2026-11-10）
+- **修「关掉多栏视图后侧栏样式还在」**：关闭时只清了 `data-dsv-row`，没有删除插件自己的样式表——而其中
+  `[data-row-key^="session:"]:not([data-dsv-row]) * { opacity: .5 }` 这条**不需要任何行标记**，
+  只要样式表还在，所有会话行的文字就一直是暗的。现在关闭/卸载时把样式表、43 个 `--dsv-*` 变量、
+  `data-dsv-row` / `data-dsv-pulse` 标记和复用来的 `_selected` 类一起清掉；重新启用时整体恢复。
+
 ### 1.0.9（2026-11-10）
 - **修「最暗 / 最亮两个圆点不在滑轨上」**：滑杆的滑块被 Chromium 顶在轨道顶部（不自动居中），实测圈心比轨道中心高 5px；补 `margin-top` 并按 border-box 计算宽度。
 - **修「调悬停浓度时预览没反应」**：预览里新增一个固定的「悬停」标签，调「悬停时浓度」能实时看到那条线的变化。
