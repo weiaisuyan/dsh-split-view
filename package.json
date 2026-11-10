@@ -1,8 +1,14 @@
 {
   "name": "dsh-multipane",
-  "version": "1.0.32",
+  "version": "1.0.33",
   "description": "Hermes-style tabbed workspace for the DSH main area: drag sessions in, split into up to four columns, close tabs.",
   "displayName": "多栏视图",
+  "dshhub": {
+    "schemaVersion": 1,
+    "displayName": "多栏视图",
+    "summary": "把 DSH 主区换成多栏标签工作区：最多四栏会话并排，每栏自带标签条、输入框与视图切换条。",
+    "categories": ["界面"]
+  },
   "type": "module",
   "main": "lib/index.js",
   "exports": {
