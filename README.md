@@ -246,6 +246,10 @@ C:\Users\weiai\.dsh\plugin-src\_probe\sync-client.ps1 -Push    # 台式机 -> �
 
 ## 更新记录
 
+### 1.0.12（2026-11-10）
+- 修上一版读取更新结果的两个字段：`restartRequired` 实际在 `outcome` 里、失败原因在 `failure.message`（不在顶层）。
+  之前会把「需要重启」误判成「刷新即可」，失败时也只显示状态名而不是市场给的原因。
+
 ### 1.0.11（2026-11-10）
 - **插件内一键更新**：设置页的「检查更新」改为走插件市场（dshmarket）的公开 update API v1 —— 发现新版直接给「立即更新」按钮，
   由插件市场负责装包、校验版本、保留回滚点；完成后按它返回的 `refreshRequired` / `restartRequired` 告诉你刷新还是重启
