@@ -1,6 +1,6 @@
 {
   "name": "dsh-multipane",
-  "version": "1.0.33",
+  "version": "1.0.34",
   "description": "Hermes-style tabbed workspace for the DSH main area: drag sessions in, split into up to four columns, close tabs.",
   "displayName": "多栏视图",
   "dshhub": {
@@ -14,7 +14,8 @@
   "exports": {
     ".": "./lib/index.js",
     "./client": "./lib/client.js",
-    "./package.json": "./package.json"
+    "./package.json": "./package.json",
+    "./locale/*.json": "./locale/*.json"
   },
   "dsh": {
     "engines": {
@@ -48,6 +49,7 @@
     "@deepseek-ai/dsh-client-ui-context-menu": ">=0.2.1-rc.5"
   },
   "files": [
+    "locale",
     "lib/index.js",
     "lib/client.js",
     "cordis.patch.yml",

@@ -45,7 +45,7 @@ npm 上另有一个插件 `dsh-split-view`（作者 luckybilly），也是给 DS
 | 本插件（npm / GitHub 装法都一样） | `dsh-multipane` |
 | 另一个作者的插件 | `dsh-split-view` |
 
-两者**名字不同、不会互相覆盖**，但都在抢主区，同时启用会互相打架（栏结构错乱、设置页串台）。只留一个，装前先确认：
+两者**名字不同、不会互相覆盖**，但都会接管主区，而且 `cordis.patch.yml` 里插的都是 `id: split-view` 这个 loader entry id —— id 撞车，同时启用必然栏结构错乱、设置页串台。**同时只能留一个**，装前先确认：
 
 ```sh
 npx @deepseek-ai/dsh plugin list | grep split-view
@@ -70,6 +70,26 @@ npx @deepseek-ai/dsh plugin --profile desktop remove dsh-split-view
 - **GitHub 装**：必须 `remove` 后重新 `add`，否则不会拉到新提交
 
 升级/换装都不会丢布局：栏、标签、栏宽存在 `localStorage`（键名固定为 `dsh-split-view:*`，与包名无关）。
+
+### 插件内的「检查更新」（宿主侧自更新路由，仅用户点击时触发）
+
+本插件带一条**宿主侧**自更新通道，只有你在设置页点「检查更新」才会走，不点什么都不做。它直接改 profile 里的文件、绕过了 pnpm，所以单独写清楚：
+
+| 路由 | 做什么 |
+| --- | --- |
+| `GET /dsh-multipane/status` | 返回 `{ version: <本机已装版本>, profile: <profile 目录> }` |
+| `POST /dsh-multipane/update`，body `{ "version": "x.y.z" }` | 从 npm 下载该版本 tarball，解压后**直接覆盖** `~/.dsh/profiles/desktop/node_modules/dsh-multipane` |
+
+自更新过程（`lib/index.js` 的 `installFromRegistry`）：
+
+1. `curl` 拉 `https://registry.npmjs.org/dsh-multipane/-/dsh-multipane-<version>.tgz` 到 `~/.dsh/.dsv-update-<pid>/`；
+2. 用 Windows 自带 `C:\Windows\System32\tar.exe` 解压（git-bash 的 GNU tar 会把 `C:/…` 当成远程主机语法，故显式走 System32 那个），核对包内 `package.json` 的 version；
+3. 把现有 `node_modules/dsh-multipane` 复制到 `~/.dsh/.dsv-backup-<pid>/`，删目录、铺新文件；
+4. 任一步失败都会把备份拷回去，半截写入不会把插件弄坏。
+
+**绕过了什么**：不经过 pnpm —— 不写 `pnpm-lock.yaml`、不受 profile 的 `minimumReleaseAge`（新版本冷却期）限制、也不触发 market 目录同步。想回到 pnpm 正规管理就 `dsh plugin --profile desktop remove dsh-multipane` 再 `add` 一次，卸载会把这套路由一起带走。
+
+**它还改 pnpm 白名单**：插件加载时 `ensureMarketInstallable()` 会在 `~/.dsh/profiles/{desktop,web}/pnpm-workspace.yaml` 里找含 `dsh-multipane@` 的那一行，末尾追加 ` || <当前版本>`（例如 `dsh-multipane@1.0.33 || 1.0.34`），好让 pnpm 放行「刚发布、还在冷却期」的同一个版本。副作用是那一行会变成多版本白名单，属预期行为。
 
 ## 交互
 
@@ -245,6 +265,24 @@ Get-Item "$env:USERPROFILE\.dsh\profiles\desktop\node_modules\dsh-split-view" | 
 轮次步数、费用明细、tok 与缓存命中、上下文已用）。
 
 ## 更新记录
+
+### 1.0.34（2026-11-10）
+
+**中英双语（跟随宿主语言）**
+
+- 新增 `locale/zh.json` / `locale/en.json` 的 `meta`：插件列表里中文界面显示「多栏视图 (dsh-multipane)」，英文界面显示「Multi-pane」，描述同步双语。之前只显示英文包名 `dsh-multipane`，是因为包里既没有 locale 元数据，`package.json` 也没导出 `./locale/*.json`。
+- 侧栏入口、设置页全部设置项、按钮 / 提示 / 右键菜单约 300 条文案随宿主语言切换（其中 44 条是带 `{0}` 占位符的模板），订阅宿主 locale，**切换语言即时生效，不用重启**。
+- 设置页标题固定双语「多栏视图 (Multi-pane)」，其余设置项跟语言走。
+
+**修复**
+
+- 设置页整页零样式：插件停用时侧栏心跳 0.7s 一拍把样式表删了，停在设置页等于一直在删。
+- 设置页在「坏页面」和正常页之间来回闪：热更新后新旧两份插件代码同时活着，两份心跳互相删/装样式表。心跳改全局唯一，样式表加载即装。
+- 关掉总开关后拖文件、加号插文件都失效：附件槽位（`conversation.input.attachments`）与 document 级 capture 监听原本无条件注册、总开关关掉也不退，且 `onDrop` 先 `preventDefault` 再找接收者，没人接就把事件吞掉。现在槽位与监听随 `enabled` 装卸，`onDrop` 先确认有接收者再拦事件。
+
+**调整**
+
+- 会话列表不再整行压暗。之前对所有会话行内元素套 `opacity`，把置顶标题和悬浮操作按钮一起压暗；现在普通行完全不动，只给 `data-dsv-row=focus/open/open-hidden` 的行做特殊样式，设置页预览同步对齐。
 
 ### 1.0.33（2026-11-10）
 - 补上 `dshhub` 元数据段（`displayName` / `summary` / `categories`）。DSH 官方插件页的中文名不读这个字段
