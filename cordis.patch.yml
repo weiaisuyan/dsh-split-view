@@ -8,3 +8,4 @@
 - insert:
     - id: split-view
       name: 'dsh-multipane'
+      label: '多栏视图'
