@@ -246,6 +246,11 @@ Get-Item "$env:USERPROFILE\.dsh\profiles\desktop\node_modules\dsh-split-view" | 
 
 ## 更新记录
 
+### 1.0.13（2026-11-10）
+- 修「明明有新版本却报已是最新」：插件市场对新发布的版本有**观察期**（release-age 策略），
+  这段时间它返回 `updateAvailable: false` 但 `latestVersion` 更高。现在会明确提示「新版本 X 已发布，
+  市场还在观察期，过几分钟再检查」，而不是把它和「真的没有新版」混成一回事。
+
 ### 1.0.12（2026-11-10）
 - 修上一版读取更新结果的两个字段：`restartRequired` 实际在 `outcome` 里、失败原因在 `failure.message`（不在顶层）。
   之前会把「需要重启」误判成「刷新即可」，失败时也只显示状态名而不是市场给的原因。
