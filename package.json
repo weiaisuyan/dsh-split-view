@@ -1,6 +1,6 @@
 {
   "name": "dsh-multipane",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Hermes-style tabbed workspace for the DSH main area: drag sessions in, split into up to four columns, close tabs.",
   "type": "module",
   "main": "lib/index.js",
