@@ -1,0 +1,39 @@
+name: 功能建议 / Feature request
+description: 想要的新能力或改进。中文或英文都可以 / Something you wish the plugin did. Chinese or English, both fine.
+title: "[feat] "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        先说清「在什么场景下、现在卡在哪」，比直接给方案更有用。
+
+        Lead with the situation and where it hurts — that is more useful than a proposed solution.
+  - type: textarea
+    id: scenario
+    attributes:
+      label: 场景 / Situation
+      description: 你在做什么、哪一步不顺手 / What you were doing and which step felt wrong
+    validations:
+      required: true
+  - type: textarea
+    id: idea
+    attributes:
+      label: 你希望的解法 / What you would like
+      description: 有具体想法就写，没有就说想要的结果 / A concrete idea, or just the outcome you want
+    validations:
+      required: false
+  - type: textarea
+    id: workaround
+    attributes:
+      label: 现在怎么绕过去的 / Current workaround
+      description: 有的话写一下，能说明这是不是真的缺口 / If you have one; it tells me whether this is a real gap
+    validations:
+      required: false
+  - type: input
+    id: version
+    attributes:
+      label: 插件版本 / Plugin version
+      placeholder: "1.0.34"
+    validations:
+      required: false

@@ -127,6 +127,21 @@ The settings page shows the current version and offers a "Check for updates" act
 - Mutually exclusive with luckybilly's `dsh-split-view` (see above);
 - Disabling the plugin restores the host's session list immediately, but an already open multi-pane workspace is not collapsed automatically — use the "Conversation" item in the view switcher to return to the single-pane view.
 
+## Feedback & support
+
+| Channel | Good for | Where |
+| --- | --- | --- |
+| **GitHub Issues** (preferred) | Bugs, feature requests, usage questions — searchable and trackable | <https://github.com/weiaisuyan/dsh-split-view/issues/new/choose> |
+| Email | Anything you would rather not post publicly (including security reports) | <1450719125@qq.com> |
+| Marketplace page | Short description, install command, current version | <https://awesome-dsh-plugin.com/p/weiaisuyan/dsh-split-view/> |
+
+When reporting, please include:
+
+- **Version** — the `已是 最新版本（1.0.x，…）` line at the bottom of the settings page, or `version` in `~/.dsh/profiles/<profile>/node_modules/dsh-multipane/package.json`
+- **DSH version** and OS (Windows / macOS / Linux)
+- **UI language** (中文 / English) — the plugin ships two string sets, and some bugs only reproduce in one
+- **Steps to reproduce**, plus any `[split-view]` error from the F12 console
+
 ## Development
 
 The shipped JavaScript **is** the source — there is no build step:
@@ -146,12 +161,14 @@ node scripts/check-names.cjs     # package name / version / release-age allowanc
 
 ## Changelog
 
-### 1.0.35 (2026-11-10)
+### Unreleased (next version)
 
 - Documentation rewritten: a complete Chinese README plus a complete English one ([README.en.md](README.en.md))
 - Three UI illustrations added: overview, drag-to-split, settings
 - New npm description, aligned with the plugin-list description in both languages
 - Author-local scripts removed from the repository
+- New "Feedback & support" section plus GitHub issue templates
+- Removed the dead "Unopened row text brightness" slider (it stopped affecting anything once 1.0.34 dropped the dimming rules)
 
 ### 1.0.34 (2026-11-10)
 

@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 私下反馈 / Private feedback (email)
+    url: mailto:1450719125@qq.com
+    about: 安全问题、涉及隐私的日志，或单纯不想公开说的话 / Security reports, logs you would rather not publish, or anything else you would rather keep private
+  - name: 插件市场条目 / Marketplace entry
+    url: https://awesome-dsh-plugin.com/p/weiaisuyan/dsh-split-view/
+    about: 简介、安装命令与当前版本 / Description, install command and current version

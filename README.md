@@ -126,6 +126,21 @@ npx @deepseek-ai/dsh plugin --profile desktop remove dsh-multipane
 - 与 luckybilly 的 `dsh-split-view` 互斥（见上）；
 - 停用插件后，宿主会话列表会恢复官方样式，但**已打开的多栏工作区不会自动收回**（切回单栏视图请点视图切换条里的「会话」）。
 
+## 反馈与支持
+
+| 渠道 | 适合说的事 | 地址 |
+| --- | --- | --- |
+| **GitHub Issues**（首选） | 报 bug、提需求、问用法。有记录、能跟进、别人也搜得到 | <https://github.com/weiaisuyan/dsh-split-view/issues/new/choose> |
+| 邮箱 | 不方便公开说的（含安全类问题、涉及隐私的日志） | <1450719125@qq.com> |
+| 插件市场条目页 | 看简介、安装命令、当前版本 | <https://awesome-dsh-plugin.com/p/weiaisuyan/dsh-split-view/> |
+
+报问题顺手带上这几样，能少一轮来回：
+
+- **版本号**：设置页最下面「已是 最新版本（1.0.x，…）」那一行，或 `~/.dsh/profiles/<profile>/node_modules/dsh-multipane/package.json` 里的 `version`
+- **DSH 版本**与系统（Windows / macOS / Linux）
+- **界面语言**（中文 / English）——本插件文案是两套，有些问题只在一种语言下复现
+- **复现步骤**，以及 F12 Console 里以 `[split-view]` 开头的报错（有就贴，没有也说明一下）
+
 ## 开发
 
 源码就是运行时代码，**没有构建步骤**：
@@ -145,12 +160,14 @@ node scripts/check-names.cjs     # 包名 / 版本 / 冷却豁免三处是否一
 
 ## 更新记录
 
-### 1.0.35（2026-11-10）
+### 未发布（下次发版）
 
 - 文档重写：中文完整版 + 英文完整版（[README.en.md](README.en.md)）
 - 新增三张界面示意图：总览、拖拽分栏、设置页
 - npm 包描述重写，插件列表里的中英描述同步对齐
 - 仓库不再包含作者本机脚本（发布脚本、令牌脚本、样式对照表）
+- 新增「反馈与支持」一节与 Issue 模板
+- 设置页去掉已失效的「未打开行文字亮度」滑杆（1.0.34 删掉压暗规则后它不再影响任何东西）
 
 ### 1.0.34（2026-11-10）
 

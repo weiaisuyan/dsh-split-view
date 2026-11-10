@@ -19,3 +19,4 @@ package.json.publish-bak
 设置npm令牌.bat
 外观样式对照表.md
 _author-tools/
+*.bak-patch*

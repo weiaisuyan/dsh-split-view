@@ -1,0 +1,80 @@
+name: Bug 报告 / Bug report
+description: 行为不对、样式错乱、报错。中文或英文都可以 / Something broken. Chinese or English, both fine.
+title: "[bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        中英文都可以，怎么顺手怎么写。填得越具体，修得越快。
+
+        Chinese or English — either is fine. The more specific, the faster this gets fixed.
+  - type: input
+    id: version
+    attributes:
+      label: 插件版本 / Plugin version
+      description: 设置页最下面「已是 最新版本（1.0.x，…）」那一行，或 node_modules/dsh-multipane/package.json 里的 version / The version line at the bottom of the settings page, or `version` in `node_modules/dsh-multipane/package.json`
+      placeholder: "1.0.34"
+    validations:
+      required: true
+  - type: dropdown
+    id: ui-language
+    attributes:
+      label: 界面语言 / UI language
+      description: 有些问题只在一种语言下复现 / Some bugs only reproduce in one language
+      options:
+        - 中文 (zh)
+        - English (en)
+    validations:
+      required: true
+  - type: input
+    id: dsh-version
+    attributes:
+      label: DSH 版本 / DSH version
+      placeholder: "0.2.1-rc.5"
+    validations:
+      required: true
+  - type: dropdown
+    id: os
+    attributes:
+      label: 系统 / OS
+      options:
+        - Windows
+        - macOS
+        - Linux
+    validations:
+      required: true
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: 发生了什么 / What happened
+      description: 实际看到什么、期望是什么。截图、录屏直接拖进来 / What you saw, what you expected. Drag screenshots or recordings in.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: 复现步骤 / Steps to reproduce
+      placeholder: |
+        1. 打开设置页 / open the settings page
+        2. 点 xxx / click xxx
+        3. ...
+    validations:
+      required: true
+  - type: textarea
+    id: console
+    attributes:
+      label: Console 日志 / Console output
+      description: F12 → Console，过滤 `[split-view]` / F12 → Console, filter by `[split-view]`
+      render: text
+    validations:
+      required: false
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: 已经排除的 / Already ruled out
+      options:
+        - label: 没有和作者 luckybilly 的 dsh-split-view 同时启用 / Not enabled together with luckybilly's dsh-split-view
+          required: true
+        - label: 改过插件文件后重启过 DSH / Restarted DSH after changing plugin files
+          required: true
