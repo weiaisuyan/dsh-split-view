@@ -161,14 +161,15 @@ node scripts/check-names.cjs     # package name / version / release-age allowanc
 
 ## Changelog
 
-### Unreleased (next version)
+### 1.0.35 (2026-11-10)
 
-- Documentation rewritten: a complete Chinese README plus a complete English one ([README.en.md](README.en.md))
-- Three UI illustrations added: overview, drag-to-split, settings
-- New npm description, aligned with the plugin-list description in both languages
-- Author-local scripts removed from the repository
-- New "Feedback & support" section plus GitHub issue templates
-- Removed the dead "Unopened row text brightness" slider (it stopped affecting anything once 1.0.34 dropped the dimming rules)
+- **Fixed the janky pulse in the session list**: the breathing effect no longer restyles and repaints the whole row every frame; it animates the opacity of a pseudo-element instead, which the compositor handles. Same look, a fraction of the cost
+- **Removed the dead "Unopened row text brightness" slider**: it stopped affecting anything once 1.0.34 dropped the dimming rules
+- **Documentation rewritten**: a complete Chinese README plus a complete English one ([README.en.md](README.en.md))
+- **Three UI illustrations added**: overview, drag-to-split, settings (rendered from the real layout and colours, not screen grabs)
+- **New npm description**, aligned with the plugin-list description in both languages
+- **New "Feedback & support"** section: issue templates, email, marketplace page
+- **Author-local scripts removed from the repository**, plus scripts/check-privacy.cjs and a CI gate so personal data cannot creep back in
 
 ### 1.0.34 (2026-11-10)
 
