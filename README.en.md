@@ -161,6 +161,10 @@ node scripts/check-names.cjs     # package name / version / release-age allowanc
 
 ## Changelog
 
+### 1.0.37 (2026-11-11)
+
+- **Fixed Ctrl+W dying on a second machine**: the host's Ctrl+W binding lives in a per-device file (`keybindings.json` in Electron's userData), so configuring one machine left the next one back on "close the window". The plugin now releases that binding itself on startup (via the host's `ctx.shortcuts.edit()`) and restores it when the switch is turned off or the plugin is disabled — no manual file copying on new machines
+
 ### 1.0.36 (2026-11-11)
 
 - **Ctrl+W closes the tab, with two switches**: the settings page gains "Ctrl+W closes the tab" (master) and "Close the window on the last tab" (depends on the former; greyed out and disabled while the master is off). Pressing Ctrl+W on the last remaining tab now closes the window instead of appearing to do nothing
