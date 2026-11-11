@@ -161,6 +161,12 @@ node scripts/check-names.cjs     # package name / version / release-age allowanc
 
 ## Changelog
 
+### 1.0.50 (2026-11-11)
+
+- **Root cause of the missing rail in panes: a deadlock.** The host hides the rail with `display:none` whenever its container is 900px or narrower. Once hidden, the rail's internal virtual scroller measures a height of zero and renders no marks at all, and the plugin used "are there marks?" as its show switch - so the switch could never turn on and the rail could never come back. That is why two or three panes (a few hundred pixels each) were always blank, and dragging a pane past 900px suddenly made it appear. The rail is now located structurally, independent of whether marks exist.
+- **Supplied the height it depends on.** The host derives the rail's height limit from two CSS variables (viewport height, composer height). While a tab was hidden it measured `0px` and wrote that, and nothing recomputed it afterwards, so the limit stayed zero. The plugin now rewrites those two variables using the host's own formula, only when they disagree, so the write is idempotent.
+- The 1.0.49 fix (aim the nudge at the real scroll container) stays: it is what wakes the host's `initialized` flag, and measurements show one scroll notification is enough.
+
 ### 1.0.49 (2026-11-11)
 
 - **Turn navigator missing in panes, step one: the automatic nudge was aimed at the wrong element.** Scroll ownership inside a pane lives on the host's `[data-conversation-scroll]`; its scroll listener returns immediately unless `event.target` is that very element, and setting `scrollTop` on a non-scrolling wrapper produces no scroll event at all. The 1.0.47 nudge targeted the list wrapper inside the tab content, so five seconds of nudging did nothing. It now targets the real scroll container and escalates: `scroll` event, then `scrollend`, then a real 1px scroll restored on the next frame, stopping as soon as the rail appears.
