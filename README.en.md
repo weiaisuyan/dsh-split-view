@@ -161,6 +161,30 @@ node scripts/check-names.cjs     # package name / version / release-age allowanc
 
 ## Changelog
 
+### 1.0.45 (2026-11-11)
+
+- **Brought the host's turn navigator back inside panes** (the column of short marks on the right of a conversation, with the "turn N" hover preview). The plugin never removed it: the host hides the rail whenever a conversation is narrower than 900px (`@container (width<=900px)`), and a two-pane layout puts each pane at roughly 650px, so the rule fires as soon as you split. The plugin now re-enables the rail inside panes only (still hidden below 480px), in CSS alone - no host DOM is touched and no React state is involved.
+
+### 1.0.44 (2026-11-11)
+
+- **Rolled back the 1.0.43 "single menu" attempt**: a narrow pane is back to two independent menus — the host's "More actions" and the plugin's "⋯". 1.0.43 merged the host menu into ours, which both broke it ("one row, then the menu vanished") and depended on reparenting the host's DOM node. Now each menu does its own job: the plugin's "⋯" only holds genuinely clipped buttons, the host's "⋯" uses its own native menu, and nothing is lost. All fixes up to 1.0.42 are unchanged.
+
+### 1.0.42 (2026-11-11)
+
+- **Fixed the session-header "More actions" menu not opening / showing only one item**: the host renders this menu as an **inline absolutely-positioned** popover inside the button's element, and the pane header's two `overflow:hidden` layers clipped it away, so clicking did nothing. Both layers are now `overflow:visible` and the header bar's `z-index` is raised to 30 so the popover can overlay the conversation; when buttons overflow they are still folded into the plugin's own "…", so panes don't bleed.
+
+### 1.0.41 (2026-11-11)
+
+- **Fixed the session-header menu showing only "More actions" with a dead click**: to avoid two "more" menus in the top-right row, the plugin used to hide the host's own "More actions" button inside its own "⋯" menu and forward a click to the hidden button. The host's newer menu positions itself from the anchor button's rect, which is zero while hidden, so it never opened. The host's button now stays visible and uses its own menu; the plugin's "⋯" only holds buttons that are genuinely clipped
+
+### 1.0.40 (2026-11-11)
+
+- **Fixed the second "Context" view showing a huge blank with a few lines at the bottom**: the previous version applied the "dock content to the bottom" rule too broadly, so views that need to fill the height and scroll on their own (trajectory / context / team) were collapsed to content height too. It is now scoped to the chat view with `:has([data-chat-flow])`, and the other views are back to normal
+
+### 1.0.39 (2026-11-11)
+
+- **Fixed the pulse peak looking brighter than the base even when both are set to the same value**: in the real list the row background and the pulse layer stack (15% base plus 15% pulse composites to 27.75%), while the settings preview uses a single layer — so the same number always looked brighter in the list. Pulsing rows now hand the background over to the pulse layer, making the on-screen opacity equal the configured value, matching the preview
+
 ### 1.0.37 (2026-11-11)
 
 - **Fixed Ctrl+W dying on a second machine**: the host's Ctrl+W binding lives in a per-device file (`keybindings.json` in Electron's userData), so configuring one machine left the next one back on "close the window". The plugin now releases that binding itself on startup (via the host's `ctx.shortcuts.edit()`) and restores it when the switch is turned off or the plugin is disabled — no manual file copying on new machines
