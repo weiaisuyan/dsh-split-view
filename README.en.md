@@ -161,6 +161,12 @@ node scripts/check-names.cjs     # package name / version / release-age allowanc
 
 ## Changelog
 
+### 1.0.51 (2026-11-11)
+
+- **The rail's hide threshold is now a setting.** A new card in Settings → UI elements, "Hide the turn rail in narrow panes", adds a 0-600px slider (default 240px, `0` = never hide). The 240px cutoff used to be hard-coded, so a narrow pane always lost the rail and there was no way to change it.
+- Changes take effect immediately without a restart, and each pane is judged on its own width (two- and three-pane layouts do not affect each other).
+- Under the hood the fixed `@container (width<=240px)` rule is replaced by one generated at runtime: container queries accept literals, not CSS variables, so the threshold has to be spliced into the rule text. Only `visibility` is hidden - `display` stays `block` - so the 1.0.46 ratchet (narrow it and it never comes back) cannot return.
+
 ### 1.0.50 (2026-11-11)
 
 - **Root cause of the missing rail in panes: a deadlock.** The host hides the rail with `display:none` whenever its container is 900px or narrower. Once hidden, the rail's internal virtual scroller measures a height of zero and renders no marks at all, and the plugin used "are there marks?" as its show switch - so the switch could never turn on and the rail could never come back. That is why two or three panes (a few hundred pixels each) were always blank, and dragging a pane past 900px suddenly made it appear. The rail is now located structurally, independent of whether marks exist.
