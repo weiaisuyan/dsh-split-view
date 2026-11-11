@@ -161,6 +161,11 @@ node scripts/check-names.cjs     # package name / version / release-age allowanc
 
 ## Changelog
 
+### 1.0.48 (2026-11-11)
+
+- **Ctrl+Tab / Ctrl+Shift+Tab now cross panes.** Before, cycling only ran inside the current pane's tabs, so a pane with a single tab did nothing and the neighbouring pane was unreachable from the keyboard. All panes' tabs are now chained into one ring in left-to-right order (and in-strip order within a pane): the tab after a pane's last one is the next pane's first, the last pane wraps back to the first, and the reverse direction mirrors that. Focus follows the target tab, so you can keep typing in the pane you landed in.
+- **Bigger "+" button on the tab strip.** It used to be a 20x20 box, shorter than the tabs and fiddly to hit. It now fills the strip's full height (same height as the tabs) and is 26px wide, with the tabs' hover background and 6px radius. Only this one button inside the tab strip changed; buttons on the settings page and elsewhere are untouched.
+
 ### 1.0.47 (2026-11-11)
 
 - **Fixed the rail being absent the first time a pane opens** (it only appeared after dragging one pane very wide). The host's turn navigator sets its `initialized` flag on a real event, and that one chance is already gone when a pane first mounts; nudging the width slightly does not wake it up, only the scroll produced by a big reflow does - which is why two, three and four panes were all blank after a restart and switching the active pane did nothing. A pane now kicks itself adaptively: every 250ms it checks whether the rail is there and, if not, dispatches a synthetic `scroll` event (no scrolling, no layout change), escalating to an 8px real scroll that is immediately restored every third attempt. It stops as soon as the rail appears, capped at five seconds.
