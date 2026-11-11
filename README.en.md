@@ -161,6 +161,10 @@ node scripts/check-names.cjs     # package name / version / release-age allowanc
 
 ## Changelog
 
+### 1.0.47 (2026-11-11)
+
+- **Fixed the rail being absent the first time a pane opens** (it only appeared after dragging one pane very wide). The host's turn navigator sets its `initialized` flag on a real event, and that one chance is already gone when a pane first mounts; nudging the width slightly does not wake it up, only the scroll produced by a big reflow does - which is why two, three and four panes were all blank after a restart and switching the active pane did nothing. A pane now kicks itself adaptively: every 250ms it checks whether the rail is there and, if not, dispatches a synthetic `scroll` event (no scrolling, no layout change), escalating to an 8px real scroll that is immediately restored every third attempt. It stops as soon as the rail appears, capped at five seconds.
+
 ### 1.0.46 (2026-11-11)
 
 - **Fixed the turn navigator flickering in and out, and never coming back after a resize**: 1.0.45 hid the rail below 480px with `display:none`, but the host's rail measures its own height for a virtual scroller - taking it out of layout recorded a height of 0 with nothing to recompute it when the pane grew back, so the rail stayed gone. The rail now keeps its layout at every width and is hidden only by `visibility` below 240px, which leaves the measurement valid and restores instantly.
