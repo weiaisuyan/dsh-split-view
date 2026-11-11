@@ -161,6 +161,11 @@ node scripts/check-names.cjs     # package name / version / release-age allowanc
 
 ## Changelog
 
+### 1.0.49 (2026-11-11)
+
+- **Turn navigator missing in panes, step one: the automatic nudge was aimed at the wrong element.** Scroll ownership inside a pane lives on the host's `[data-conversation-scroll]`; its scroll listener returns immediately unless `event.target` is that very element, and setting `scrollTop` on a non-scrolling wrapper produces no scroll event at all. The 1.0.47 nudge targeted the list wrapper inside the tab content, so five seconds of nudging did nothing. It now targets the real scroll container and escalates: `scroll` event, then `scrollend`, then a real 1px scroll restored on the next frame, stopping as soon as the rail appears.
+- **Added evidence capture**: each pane writes whether the rail appeared, the host's internal reading state (`initialized` / `followingTail`), the scroll container's size and the two CSS variables into `localStorage` under `dsv-rail-diag` (last 12 entries). It exists so the root cause can be pinned down without DevTools and does not affect the UI.
+
 ### 1.0.48 (2026-11-11)
 
 - **Ctrl+Tab / Ctrl+Shift+Tab now cross panes.** Before, cycling only ran inside the current pane's tabs, so a pane with a single tab did nothing and the neighbouring pane was unreachable from the keyboard. All panes' tabs are now chained into one ring in left-to-right order (and in-strip order within a pane): the tab after a pane's last one is the next pane's first, the last pane wraps back to the first, and the reverse direction mirrors that. Focus follows the target tab, so you can keep typing in the pane you landed in.
