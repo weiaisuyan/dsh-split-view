@@ -161,6 +161,13 @@ node scripts/check-names.cjs     # package name / version / release-age allowanc
 
 ## Changelog
 
+### 1.0.36 (2026-11-11)
+
+- **Ctrl+W closes the tab, with two switches**: the settings page gains "Ctrl+W closes the tab" (master) and "Close the window on the last tab" (depends on the former; greyed out and disabled while the master is off). Pressing Ctrl+W on the last remaining tab now closes the window instead of appearing to do nothing
+- **Bar thickness is now a continuous slider**: "Focused row bar thickness" and "Open-row bar thickness" were 1–8px chip buttons; they are sliders now, 0.5% steps up to 30% of the session-row width. Existing px values are converted to percentages automatically
+- **Dragging a tab no longer lights up every divider**: only the divider the pointer is actually over highlights
+- **New "Interaction" section in settings** explaining that motion follows the system animation setting, so the app stays still when Windows animations are off (by design)
+
 ### 1.0.35 (2026-11-10)
 
 - **Fixed the janky pulse in the session list**: the breathing effect no longer restyles and repaints the whole row every frame; it animates the opacity of a pseudo-element instead, which the compositor handles. Same look, a fraction of the cost
