@@ -161,6 +161,10 @@ node scripts/check-names.cjs     # package name / version / release-age allowanc
 
 ## Changelog
 
+### 1.0.46 (2026-11-11)
+
+- **Fixed the turn navigator flickering in and out, and never coming back after a resize**: 1.0.45 hid the rail below 480px with `display:none`, but the host's rail measures its own height for a virtual scroller - taking it out of layout recorded a height of 0 with nothing to recompute it when the pane grew back, so the rail stayed gone. The rail now keeps its layout at every width and is hidden only by `visibility` below 240px, which leaves the measurement valid and restores instantly.
+
 ### 1.0.45 (2026-11-11)
 
 - **Brought the host's turn navigator back inside panes** (the column of short marks on the right of a conversation, with the "turn N" hover preview). The plugin never removed it: the host hides the rail whenever a conversation is narrower than 900px (`@container (width<=900px)`), and a two-pane layout puts each pane at roughly 650px, so the rule fires as soon as you split. The plugin now re-enables the rail inside panes only (still hidden below 480px), in CSS alone - no host DOM is touched and no React state is involved.
