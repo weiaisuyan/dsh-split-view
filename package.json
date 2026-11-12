@@ -1,6 +1,6 @@
 {
     "name":  "dsh-multipane",
-    "version": "1.0.52",
+    "version": "1.0.53",
     "description":  "Split the DSH main area into up to four panes, each with its own tab strip, composer and view switcher. Drag a tab to a pane edge to split. Bilingual (zh/en).",
     "displayName":  "多栏视图",
     "dshhub":  {
