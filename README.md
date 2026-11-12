@@ -160,6 +160,12 @@ node scripts/check-names.cjs     # 包名 / 版本 / 冷却豁免三处是否一
 
 ## 更新记录
 
+### 1.0.52（2026-11-12）
+
+- **修「明明更新过，进设置页还提示新版本」**：设置页那个更新按钮只把文件覆盖进 `node_modules\dsh-multipane`，而 profile 的 `package.json` 与 `pnpm-lock.yaml` 里还钉着旧版本号。之后只要在这个 profile 里装/卸**任何**别的插件（pnpm 一跑），它就会按 lockfile 把这个目录重铺回旧版本 —— 用户看到的就是「更新成功了，提示还在」。实测：1.0.51 装上后 9:09 确实在跑，9:42 装了另一个插件，目录又变回 1.0.37
+- 现在自更新成功后同时改两处登记：`package.json` 里的依赖值，以及 `pnpm-lock.yaml` 的 importer（specifier 与 version）、packages 条目（键名与 integrity）、snapshots 键名。全部按文本编辑，保留原文件格式。两处里只要有一处不能确定改对就**一并不改**，并在提示里写明「依赖登记没同步」—— 留一半新一半旧会让 pnpm 以 frozen-lockfile 不一致为由拒绝整个 profile，比退回一版更糟
+- integrity 用下载到的 tgz 现算（sha512），与 npm registry 给的完全一致；新版本号同时写进 `pnpm-workspace.yaml` 的等待期白名单，免得下次 pnpm 解析时被 24 小时新包限制挡住
+
 ### 1.0.51（2026-11-11）
 
 - **轮次导航条的隐藏阈值变成设置项**：设置页「界面元素」新增「窄栏隐藏轮次导航条」，一根 0–600px 的滑杆，默认 240px，`0` = 永不隐藏。以前 240 是写死的，栏一窄就消失、改不了
