@@ -161,6 +161,12 @@ node scripts/check-names.cjs     # package name / version / release-age allowanc
 
 ## Changelog
 
+### 1.0.54 (2026-11-19)
+
+- **Fix "a new session open in another pane disappears from the sidebar".** DSH's session list only keeps the blank New Session row of the *current* main session; switching focus to another pane moves the host's main session, and the untouched new session in the first pane gets filtered out. Now, while a blank session is still open in any pane tab, the plugin projects it into the sidebar as an ordinary row (still titled "New session", with no timestamp or hover actions, and the right-click / double-click rename / drag interactions that native blank rows do not have stay disabled). Once it receives its first message, is closed, or the plugin is disabled, the native blank row returns. Only the display snapshot is touched — the host's session state, main selection and retention counts are left alone; the new-session page still uses its hero layout (composer centred), because the hero flag is computed from the true blank value rather than the projected row.
+- **One new session per pane.** Before creating, the tab-strip "+" and the sidebar New Session entry look for an existing blank tab in the current pane and switch to it instead of creating another.
+- **Fix stats showing inside every pane as well as the bottom bar.** `dsh-cost-meter` renamed its composer stats row, so the plugin's old `.cm-stat-dock` lookup stopped finding it: the row was neither docked into the status bar nor hidden in the panes. It now locates the host's stable `[data-composer-dock]` row (with the old class as a fallback), so these numbers appear only in the bottom status bar; the cost-details and context-usage buttons stay clickable.
+
 ### 1.0.51 (2026-11-11)
 
 - **The rail's hide threshold is now a setting.** A new card in Settings → UI elements, "Hide the turn rail in narrow panes", adds a 0-600px slider (default 240px, `0` = never hide). The 240px cutoff used to be hard-coded, so a narrow pane always lost the rail and there was no way to change it.
