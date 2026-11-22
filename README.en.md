@@ -161,6 +161,11 @@ node scripts/check-names.cjs     # package name / version / release-age allowanc
 
 ## Changelog
 
+### 1.0.55 (2026-11-22)
+
+- **Fix duplicate New Session rows when the sidebar button is clicked repeatedly.** The sidebar New Session entry (and Ctrl+N) goes through the host's `uiWorkspace.startSession`. The 1.0.54 guard tried to install itself once at plugin load, but that host service often becomes available later, so the guard was never installed: each click really created or reused a blank session. The plugin did not open it as a tab, but the host still made it the current session, so another "New session" row appeared in the sidebar. The guard now retries until the service is ready (every 700ms, then stops), and when a new blank is merged into the pane's existing blank tab the host's main session is switched back to that existing blank as a second line of defence.
+- Behaviour is unchanged: one new session per pane; prompt-carrying creations and the "close the last tab" replacement flow still create as before.
+
 ### 1.0.54 (2026-11-19)
 
 - **Fix "a new session open in another pane disappears from the sidebar".** DSH's session list only keeps the blank New Session row of the *current* main session; switching focus to another pane moves the host's main session, and the untouched new session in the first pane gets filtered out. Now, while a blank session is still open in any pane tab, the plugin projects it into the sidebar as an ordinary row (still titled "New session", with no timestamp or hover actions, and the right-click / double-click rename / drag interactions that native blank rows do not have stay disabled). Once it receives its first message, is closed, or the plugin is disabled, the native blank row returns. Only the display snapshot is touched — the host's session state, main selection and retention counts are left alone; the new-session page still uses its hero layout (composer centred), because the hero flag is computed from the true blank value rather than the projected row.
