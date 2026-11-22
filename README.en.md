@@ -161,6 +161,10 @@ node scripts/check-names.cjs     # package name / version / release-age allowanc
 
 ## Changelog
 
+### 1.0.56 (2026-11-22)
+
+- **The host settings section now has Check for updates too.** Previously the version/con check/one-click update row only existed on the plugin's own settings page (sidebar entry); opening the plugin from DSH Settings showed switches and appearance only. The row is now a shared component rendered by both the plugin settings page and the host settings section, so the two stay identical and a future change only has to be made once.
+
 ### 1.0.55 (2026-11-22)
 
 - **Fix duplicate New Session rows when the sidebar button is clicked repeatedly.** The sidebar New Session entry (and Ctrl+N) goes through the host's `uiWorkspace.startSession`. The 1.0.54 guard tried to install itself once at plugin load, but that host service often becomes available later, so the guard was never installed: each click really created or reused a blank session. The plugin did not open it as a tab, but the host still made it the current session, so another "New session" row appeared in the sidebar. The guard now retries until the service is ready (every 700ms, then stops), and when a new blank is merged into the pane's existing blank tab the host's main session is switched back to that existing blank as a second line of defence.
