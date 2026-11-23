@@ -20,3 +20,6 @@ package.json.publish-bak
 外观样式对照表.md
 _author-tools/
 *.bak-patch*
+
+# 打包产物
+dist/

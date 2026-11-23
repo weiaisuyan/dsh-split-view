@@ -161,6 +161,50 @@ node scripts/check-names.cjs     # package name / version / release-age allowanc
 
 ## Changelog
 
+> 1.0.57–1.1.8 were internal iterations and were not published to npm; 1.1.9 is the first public release after 1.0.56.
+
+### 1.1.9 (2026-11-23)
+
+- **Fix: after disabling and re-enabling in the plugin manager, the panes did not return and the colors turned gray.** On 0.2.3 a disable stops only the Host entry; the client code is never unloaded. The Host `/dsh-multipane/status` now reads the profile `package.json` `bundles` directly (the manager removes the plugin there), and the client watches it through a `globalThis` watchdog that survives a ctx disposal. A disable clears the styles, row marks, `data-dsv-*` and `--dsv-*`; a re-enable revives in place: restores `prefs.enabled`, reinstalls the stylesheet, rewrites the color variables, and removes the stale inline `display:none` on `.dsv-root`.
+- **Fix: the sidebar rail and tab underlines were gray after a re-enable.** The purge removed the `--dsv-*` variables from `<html>`, while the old code rewrote them only through a prefs subscription that died with the old context. The 700 ms global heartbeat now rewrites them whenever they are missing or the settings changed, without relying on that subscription.
+- **Diagnostics**: `~/.dsh/.dsv-diag.json` now reports `build / status / panel.activePanelId / dom` (root, pane and tab rects plus computed styles); `~/.dsh/.dsv-disabled` can force one disable-cleanup pass for troubleshooting.
+
+### 1.0.89 (2026-11-23)
+
+- **Fix: the Session list lost its rendering as soon as the plugin manager opened.** The cause was the `html:not(:has(.dsv-root)) …` fallback added in 1.0.8x: a missing `.dsv-root` does not mean "disabled" — opening the plugin manager, the settings page or any Host panel that takes over the workspace unmounts it, leaving the marks in place while those rules stripped every style. The whole block is gone; cleanup after a disable is the liveness probe's job now.
+- **A disable is now declared only after eight continuous seconds without the Host route** (it used to be two failed probes, about five seconds). Host recomposition makes the route blink; counting attempts cleared the page too eagerly.
+### 1.0.88 (2026-11-23)
+
+- **Disabling the plugin in the host's plugin manager now cleans the page immediately (no `Ctrl+R`).** On 0.2.3 a disable stops only the Host entry: the client code already injected into the page is never unloaded and receives no notification. The plugin now treats **its own Host route as the liveness signal**: `lib/index.js` registers `/dsh-multipane/status` inside `ctx.effect`, so disabling removes the route together with the plugin. The client probes it every 2.5s, requires one successful answer first (so environments without a webServer never false-positive), and after two consecutive failures deletes its injected `<style>`, the row marks, the `<html>` attributes and hides the workspace root, restoring the stock look in place. Re-enabling answers again, and the client then reloads the page once to mount the plugin cleanly (sessions and tasks live on the Host, so the reload does not interrupt them). If the Host keeps the workspace mounted after a disable, the client reloads once as well, so the stock interface comes back completely.
+- **The row rail is now a slice of the Session row instead of a stripe beside it.** The breathing plate used to cover only the padding box while the rail was painted into the row's outermost 2.67px transparent border, so the two left edges disagreed and a seam showed around the rounded corners. The plate now spans the whole row (border box), and the static rail is drawn by an `::after` with the same shape plus a mask that keeps only the leading pixels: its outer edge follows the row's radius, its inner edge meets the plate, and the rail itself does not participate in the breathing animation.
+### 1.0.87 (2026-11-23)
+
+- **Fix: only one Session row remained after opening the plugin manager.** 1.0.60 replaced the hand-built Session reference with the host's **real retain handle**. The host treats that handle as "a mounted surface is using this Session" and releases it when the workspace unmounts, so the Session vanished from the sidebar. An A/B check (1.0.55 fine; 1.0.86 with the real handle off keeps both rows) confirmed it, so the shell is back. The actual fix for empty pane bodies was `facets: { conversation: true }` on retain (1.0.63), independent of the reference shape.
+- Also confirmed: after disabling the plugin in the manager, no sidebar marks remain (`html:not(:has(.dsv-root))` neutralizes them when the workspace is gone).
+### 1.0.64 (2026-11-23)
+
+- **Fix: only the focused pane had a body** (covers the 1.0.61–1.0.63 investigation). The reference handed to the host's Session context was a hand-built shell and `sessions.retain()` omitted `facets: { conversation: true }`. 0.2.3 resolves bindings through `bindingSource(reference)`, so the shell produced none and the missing facet never materialized the conversation face — the subtree fell back to the host's current Session. The real retain handle is returned now, with the conversation facet; each pane binds its own Session. Verified with two panes side by side.
+- **Session drag into a pane is no longer hijacked**: 0.2.3 shows a document-level "open in sidebar" drop preview over the main area. The gesture is now taken over in the window capture phase — the host never sees it (no preview) and the same coordinates are replayed to our pane, reusing the existing edge-split / add-tab logic.
+- **Diagnostics are silent by default**: set `window.__dsvDiagOn = true` in the Console to enable them.
+### 1.0.60 (2026-11-23)
+
+- **Fix: only the focused pane had a body.** The reference handed to the host's Session context was a hand-built `{sessionId, binding}` shell. 0.2.3 resolves the binding through `bindingSource(reference)`, so the shell produced an empty binding and the subtree fell back to the host's *current* Session — every other pane rendered empty. The real `sessions.retain()` handle is returned now, so each pane binds its own Session.
+- **Drag-in fallback**: another plugin can swallow `dragstart` during the capture phase, which made the whole drag look "external" and let the host's "open in sidebar" target take the drop. The row's Session is now recorded on pointerdown, and the window title bar is switched to no-drag at the same moment so `dragover` reaches the page.
+### 1.0.59 (2026-11-23)
+
+- **Fix: the rightmost header button toggled the wrong thing.** 1.0.58 forwarded its click to the new 0.2.3 "Session panel" switch; that was wrong — this button has always opened the **right sidebar** (the tabbed column), while the Session panel is a separate floating surface. It now calls `sidebarRight.toggleExpanded()` for state and `layout.openRightbar/closeRightbar` for the track (flattened onto `layout` in 0.2.3), both through the compatibility layer.
+- **Read the state from the service** (`sidebarRight.isExpanded()`) instead of the build-hashed `.mP3x-q_rightbarCol` class.
+### 1.0.58 (2026-11-23)
+
+- **Restore the two APIs DSH 0.2.3 moved**: the host flattened the right-bar methods from `layout.panels.*` onto `layout.*` and deleted `uiWorkspace.replaceMain` (replaced by `openSession`). All six call sites went silent: the right-bar button did nothing, the focused tab stopped syncing the host's current Session, and leaving split view left the host on the old Session. A compatibility layer now speaks both generations.
+- **The corner toggle forwards to the official switch**: 0.2.3's right bar is the official Session panel, whose own toggle owns state and animation. Our corner button now delegates the click instead of reimplementing the open/close logic.
+- **Creation hooks cover the new entry points**: `connectWorkspace` / `startSession` are captured too, and the "retry every 300 ms while an API is missing" loop is capped at 20 attempts so a removed API no longer spins forever.
+### 1.0.57 (2026-11-23)
+
+- **Adapt to DSH 0.2.3-alpha.2 header entries**: the host now injects a full set of standard props into every slot entry. Our pane header builds props by hand, so a missing one silently removed the whole entry — four buttons disappeared in one day: the new **Session panel toggle** (three-line glyph), **schedule catalog**, **subagent breadcrumb** and **agent-preset label**. The pane header now supplies `useSessions`, `useAccess` and friends, and every entry gets a renderer for the child slots it declares (the Session panel's attention dot lives there); an undeclared child slot returns empty instead of throwing.
+- **Fix the stylesheet never installing**: calling `applyLineVars()` during module evaluation hit the TDZ of the style text (`Cannot access 'CSS' before initialization`). The first call is now deferred to a microtask and `installStyles` retries once.
+- Known gap (next release): focus-session sync and right-panel open/close still use 0.2.2's `uiWorkspace.replaceMain` / `layout.panels`, which 0.2.3 removed or flattened.
+
 ### 1.0.55 (2026-11-22)
 
 - **Fix duplicate New Session rows when the sidebar button is clicked repeatedly.** The sidebar New Session entry (and Ctrl+N) goes through the host's `uiWorkspace.startSession`. The 1.0.54 guard tried to install itself once at plugin load, but that host service often becomes available later, so the guard was never installed: each click really created or reused a blank session. The plugin did not open it as a tab, but the host still made it the current session, so another "New session" row appeared in the sidebar. The guard now retries until the service is ready (every 700ms, then stops), and when a new blank is merged into the pane's existing blank tab the host's main session is switched back to that existing blank as a second line of defence.
