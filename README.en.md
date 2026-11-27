@@ -116,7 +116,7 @@ The settings page shows the current version and offers a "Check for updates" act
 
 ## Compatibility
 
-- DSH `>= 0.2.1-rc.5` (desktop and web profiles)
+- DSH `>= 0.2.3-alpha.2` (desktop and web profiles)
 - Client platform: `web` (the Chromium runtime inside DSH desktop)
 - Four panes maximum; pane widths are stored as ratios so resizing the window does not break the layout
 
@@ -162,6 +162,12 @@ node scripts/check-names.cjs     # package name / version / release-age allowanc
 ## Changelog
 
 > 1.0.57–1.1.8 were internal iterations and were not published to npm; 1.1.9 is the first public release after 1.0.56.
+
+### 1.1.10 (2026-11-27)
+
+- **Fix: a pasted screenshot landed in another pane, or nowhere at all.** By replacing the Host `main` slot with its own workspace, the plugin leaves no composer rendered with `occurrence === "main"`. The Host's document-level paste router only addresses two candidates — the composer that most recently held focus, or the `main` one. So a screenshot pasted while the caret sits outside the editor went to **the pane whose composer was focused last**, or was dropped without any message. (A paste with the caret inside the editor goes through the editor's own paste command, which is why the bug looked intermittent and vanished when the plugin was off.)
+  The plugin now installs a capture-phase `paste` listener on `window`, running before the Host's bubble listener on `document`, and does exactly one thing: it focuses the composer of the current pane's active tab. That `focus()` fires `focusin` synchronously, so the Host router's "last focused" candidate is updated before its own listener runs, and the paste is delivered to the right pane. No `preventDefault`, no `stopPropagation`, the clipboard is never read. It steps aside entirely when the paste carries no file, when the origin is an editable, when focus is already in an editable, when a modal is in the foreground, or when no pane or editor can be found. Installed and removed with the master switch, so a disabled plugin leaves no listener behind.
+- **Host requirement raised to `>=0.2.3-alpha.2`**: `engines.dsh` and `peerDependencies` now name the oldest Host this release was verified against, so 0.2.2 and earlier are refused in the plugin manager instead of installing half-working. Old Hosts are no longer compatibility-tested; the fix itself uses only capture-phase listening, `focus()` and the plugin's own "current pane" resolution, so it adds no new Host API dependency.
 
 ### 1.1.9 (2026-11-23)
 

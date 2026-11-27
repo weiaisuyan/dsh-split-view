@@ -1,6 +1,6 @@
 {
     "name":  "dsh-multipane",
-    "version": "1.1.9",
+    "version": "1.1.10",
     "description":  "Split the DSH main area into up to four panes, each with its own tab strip, composer and view switcher. Drag a tab to a pane edge to split. Bilingual (zh/en).",
     "displayName":  "多栏视图",
     "dshhub":  {
@@ -21,7 +21,7 @@
                 },
     "dsh":  {
                 "engines":  {
-                                "dsh":  "\u003e=0.2.1-rc.5"
+                                "dsh":  "\u003e=0.2.3-alpha.2"
                             },
                 "bundle":  {
                                "patch":  "./cordis.patch.yml"
@@ -46,9 +46,9 @@
                            ]
             },
     "peerDependencies":  {
-                             "@deepseek-ai/dsh":  "\u003e=0.2.1-rc.5",
+                             "@deepseek-ai/dsh":  "\u003e=0.2.3-alpha.2",
                              "react":  "^18.2.0",
-                             "@deepseek-ai/dsh-client-ui-context-menu":  "\u003e=0.2.1-rc.5"
+                             "@deepseek-ai/dsh-client-ui-context-menu":  "\u003e=0.2.3-alpha.2"
                          },
     "files":  [
                   "locale",
